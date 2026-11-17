@@ -1,0 +1,23 @@
+{
+  "name": "発電のしくみくらべ",
+  "short_name": "発電くらべ",
+  "description": "手がかり3枚から発電方法を当て、決め手も選ぶ1日5問",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef3ef",
+  "theme_color": "#eef3ef",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
