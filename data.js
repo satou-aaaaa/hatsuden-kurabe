@@ -102,7 +102,6 @@
     { id: "food", t: "食べ物のごみ（食品廃棄物）も燃料になる", y: ["bio"], n: not("bio"), d: 1, s: "bio" },
     { id: "neutral", t: "CO2は出るが「カーボンニュートラル」とされる", y: ["bio"], n: not("bio"), d: 1, s: "bio" },
     { id: "village", t: "燃料になる資源は、農村や漁村に多い", y: ["bio"], n: not("bio"), d: 1, s: "bio" },
-    { id: "biocost", t: "燃料代が、費用の約7割をしめる（木質）", y: ["bio"], n: ["sui", "taiyo", "furyoku", "chinetsu"], d: 1, s: "bio" },
   ];
   const CL = Object.fromEntries(CLUES.map((c) => [c.id, c]));
 

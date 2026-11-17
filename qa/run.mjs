@@ -30,7 +30,7 @@ const TT = {
   taiyo: "noco2 renew domestic weather wide battery panel roof",
   furyoku: "noco2 renew domestic weather wide battery blade nacelle weak offshore",
   chinetsu: "steam renew domestic nofuel stable hot volcano rank3 back",
-  bio: "co2 renew domestic wood food neutral village biocost",
+  bio: "co2 renew domestic wood food neutral village",
 };
 const TRUE = Object.fromEntries(Object.entries(TT).map(([m, v]) => [m, new Set(v.split(" "))]));
 {
@@ -348,6 +348,7 @@ try {
     await solve(a);
     await b.click(`.ch[data-j="${await ansIdx(b)}"]`);
     await b.waitForTimeout(200);
+    if (await b.locator(".why button:not(:disabled)").count()) { await why(b); await b.waitForTimeout(200); } // 古いタブが2段目へ進んでしまっても、答え終えてから二重に数えないかを見る（PR #1 の CodeRabbit）
     const s = await mem(a);
     check("古いタブで同じ問題に答えても二重に数えない", s.runs.d.res.length === 1 && Object.values(s.dex).reduce((x, y) => x + y) === 1);
     // ヒントの数は、別のタブで使った分も減らさない
@@ -505,7 +506,7 @@ try {
   check("2段目の決め手：どの発電方法にも、決め手になる手がかりが2つ以上ある（同じ決め手ばかりにしない）", G.METHODS.every((m) => G.CLUES.filter((c) => c.y.includes(m.id) && keys.has(c.id)).length >= 2)); }
 // 引き継ぎコード（shared-workflows template/qa/transfer-check.mjs）
 try {
-  const sample = { "hatsuden-v1": JSON.stringify({ v: 1, tut: true, days: { "2026-11-13": { m: [0, 1, 0, 0, 2], k: ["lng0", "sui0", "taiyo1", "genshi1", "bio2"] } }, hdays: {}, adays: {}, dex: { lng0: 1, sui0: 1, taiyo1: 1, genshi1: 1, bio2: 1 }, runs: {}, kofi: {}, ach: {}, ebest: 7, t: 1 }), "hatsuden-fs": "3" };
+  const sample = { "hatsuden-v1": JSON.stringify({ v: 1, tut: true, days: { "2026-11-13": { m: [0, 1, 0, 0, 2], k: ["lng0", "sui0", "taiyo1", "genshi1", "bio2"] } }, hdays: {}, adays: {}, dex: { lng0: 1, sui0: 1, taiyo1: 1, genshi1: 1, bio2: 1 }, runs: {}, kofi: {}, ach: {}, ebest: 7, t: 1 }), "hatsuden-fs": "3", "hatsuden-depth": JSON.stringify({ v: 1, rv: { "sui0|2026-11-13:d1": { s: 1, due: "2026-11-16", t: 5, lab: "水力" } }, sure: 3, sureOk: 2, learned: 1 }) }; // 復習の記録も引き継ぎで比べる（PR #1 の CodeRabbit）
   await checkTransfer({ browser, url, game: "hatsuden-kurabe", sample, check, open: async (pg) => { if (await pg.locator("#howto[open]").count()) await pg.click("#howto-ok"); } });
 } catch (e) { check("引き継ぎの検査が最後まで動く", false, e.message.split("\n")[0]); }
 await browser.close();
