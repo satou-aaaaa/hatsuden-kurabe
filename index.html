@@ -347,8 +347,8 @@ html.a11y-say body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))!i
   <h2 id="howto-t">遊び方</h2>
   <ol>
     <li>発電方法の手がかりが3枚出ます。</li>
-    <li>どの発電方法か、選び肢から押します。</li>
-    <li>正解したら「決め手はどれ？」を選びます。その1枚だけで、ほかの選び肢を全部消せる手がかりです。</li>
+    <li>どの発電方法か、選択肢から押します。</li>
+    <li>正解したら「決め手はどれ？」を選びます。その1枚だけで、ほかの選択肢を全部消せる手がかりです。</li>
     <li>最後に、しくみの説明と資料の出どころが出ます。</li>
   </ol>
   <p>自信があるときは、答える前に「🎯 自信あり？」を押します（押さなくても遊べます）。</p>
@@ -576,7 +576,7 @@ function home() {
 function practiceMenu() {
   app.innerHTML = `<header><button class="icon" id="back" aria-label="もどる">←</button><h1>練習<small>今日の記録には入りません（発電帳には載ります）</small></h1></header>
     <p class="note">難しさを選ぶと5問出ます。何度でも遊べます。</p>
-    <div class="lv">${LV.map((l, t) => `<button class="sub" data-t="${t}" style="min-height:64px">${l}<small>${["選び肢3つ", "選び肢4つ", "選び肢4つ・くわしい手がかり"][t]}</small></button>`).join("")}</div>
+    <div class="lv">${LV.map((l, t) => `<button class="sub" data-t="${t}" style="min-height:64px">${l}<small>${["選択肢3つ", "選択肢4つ", "選択肢4つ・くわしい手がかり"][t]}</small></button>`).join("")}</div>
     <p class="note">発電帳の発電方法を押すと、その方法が答えの問題だけで練習できます。</p>${footer()}`;
   $("back").onclick = home;
   document.querySelectorAll(".lv button").forEach((b) => (b.onclick = () => startRun("p", +b.dataset.t)));
@@ -642,7 +642,7 @@ function play() {
     </header>
     ${showTip ? `<div class="tip"><b>今日のまめ知識：${tip[0]}</b><br>${tip[1]}</div>` : ""}
     <div class="ad act" id="card">
-      <div class="bar"><span>⚡ 手がかり3枚</span><span>${LV[P.lv]}・選び肢${P.opts.length}つ</span></div>
+      <div class="bar"><span>⚡ 手がかり3枚</span><span>${LV[P.lv]}・選択肢${P.opts.length}つ</span></div>
       <ol class="clues" id="clues" aria-label="手がかり">${P.clues.map((c, j) => `<li data-a11y-say><span class="n" aria-hidden="true">${j + 1}</span><span>${esc(c.t)}</span></li>`).join("")}</ol>
       <p class="ask" id="ask" data-a11y-say>どの発電方法？</p>
       ${cur.wrong.length || cur.step === 2 ? "" : `<div class="sure-row">${Depth.sureHtml()}</div>`}
@@ -671,7 +671,7 @@ function paint() {
   const cut = cutOf();
   document.querySelectorAll(".ch").forEach((b) => { const t = cur.P.opts[+b.dataset.j], ng = cur.wrong.includes(t) || cut.includes(t); b.classList.toggle("ng", ng); b.disabled = ng || cur.done || cur.step === 2; b.setAttribute("aria-label", t + (ng ? "（ちがう）" : "")); });
   const h = $("hint"); if (h) h.disabled = cur.done || cur.hints >= 2;
-  $("hintbox").innerHTML = cur.hints && !cur.done ? `<div class="hint" role="status">💡 ${esc(cur.P.look)}${cur.hints >= 2 ? `<br>💡 ちがう選び肢を消しました。のこりは${cur.P.opts.filter((x) => !cutOf().includes(x) && !cur.wrong.includes(x)).length}つです。` : ""}</div>` : "";
+  $("hintbox").innerHTML = cur.hints && !cur.done ? `<div class="hint" role="status">💡 ${esc(cur.P.look)}${cur.hints >= 2 ? `<br>💡 ちがう選択肢を消しました。のこりは${cur.P.opts.filter((x) => !cutOf().includes(x) && !cur.wrong.includes(x)).length}つです。` : ""}</div>` : "";
 }
 function hint() { if (cur.done || cur.hints >= 2) return; if (cur.step === 2) { if (cur.h2 || !left2Of().length) return; cur.h2 = 1; cur.hints++; keep(); return paintWhy(); } cur.hints++; keep(); paint(); }
 // 2段目：正解したら「決め手はどれ？」を手がかり3枚から選ぶ（game-dev.md「1問を深くする」）。
@@ -688,7 +688,7 @@ function askWhy() {
   $("clues").hidden = true; // 手がかりは2段目のボタンに移す（同じ文を2回出さない）
   if ($("ask")) $("ask").textContent = `答え：${P.ans}`;
   document.querySelectorAll("#card [data-a11y-say]").forEach((e) => e.removeAttribute("data-a11y-say")); // 読み上げは2段目の問いと選び肢だけ（funka-level #1 の CodeRabbit）
-  $("why").innerHTML = `<p class="note" data-a11y-say>決め手はどれ？（この1枚だけで、ほかの選び肢を全部消せる）</p><div class="why" role="group" aria-label="決め手の手がかり">${GK().map((x, j) => `<button data-g="${x}" data-a11y-say><span class="n" aria-hidden="true">${P.cl.indexOf(x) + 1}</span><span>${esc(clText(x))}</span></button>`).join("")}</div>`;
+  $("why").innerHTML = `<p class="note" data-a11y-say>決め手はどれ？（この1枚だけで、ほかの選択肢を全部消せる）</p><div class="why" role="group" aria-label="決め手の手がかり">${GK().map((x, j) => `<button data-g="${x}" data-a11y-say><span class="n" aria-hidden="true">${P.cl.indexOf(x) + 1}</span><span>${esc(clText(x))}</span></button>`).join("")}</div>`;
   document.querySelectorAll(".why button").forEach((b) => (b.onclick = () => chooseWhy(b.dataset.g)));
   paintWhy();
 }
@@ -703,7 +703,7 @@ const alsoOf = (x) => { const c = clOf(x); return c ? cur.P.om.filter((m) => m !
 function chooseWhy(x) {
   if (cur.done || cur.step !== 2) return;
   if (!same(load().runs[MODE])) { toast("別の画面で先に進んでいます"); return play(); }
-  if (x !== cur.P.grp) { if (cur.w2.includes(x)) return; buzz(40); cur.w2.push(x); keep(); paintWhy(); const also = alsoOf(x); $("msg").className = "msg bad"; $("msg").textContent = `✕ それは${also.length ? also.join("・") + "にも" : "ほかの選び肢にも"}当てはまります。もう一度どうぞ。`; return; }
+  if (x !== cur.P.grp) { if (cur.w2.includes(x)) return; buzz(40); cur.w2.push(x); keep(); paintWhy(); const also = alsoOf(x); $("msg").className = "msg bad"; $("msg").textContent = `✕ それは${also.length ? also.join("・") + "にも" : "ほかの選択肢にも"}当てはまります。もう一度どうぞ。`; return; }
   const b = document.querySelector(`.why button[data-g="${x}"]`); if (b) b.classList.add("ok");
   solved();
 }
